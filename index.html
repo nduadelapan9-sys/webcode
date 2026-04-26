@@ -1,0 +1,122 @@
+http://0.0.0.0:1994/Server.html<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Formulir Cetak PDF</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url('background.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .container {
+        width: 950px;
+        margin: 20px auto;
+        background: rgba(255,255,255,0.9);
+        padding: 30px;
+        border-radius: 80px;
+    }
+
+    .logo {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .logo img {
+        width: 500px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 9px;
+        margin-top: 5px;
+    }
+
+    .btn {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    /* Style khusus saat print */
+    @media print {
+        button {
+            display: none;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+    
+    <div class="logo">
+        <img src="logo.png" alt="Logo">
+    </div>
+
+    <h2>NOTA NR AUDIO PRODUCTION</h2>
+
+    <div class="form-group">
+        <label>NAMA</label>
+        <input type="text">
+    </div>
+
+    <div class="form-group">
+        <label>HARGA DP</label>
+        <input type="angka">
+    </div>
+    
+    <div class="form-group">
+        <label>TOTAL HARGA SEWA</label>
+        <input type="angka">
+    </div>
+    
+    <div class="form-group">
+        <label>KETERANGAN</label>
+        <input type="text">
+    </div>
+     
+    <div class="form-group">
+        <label>ALAMAT</label>
+        <textarea rows="4"></textarea>
+    </div>
+
+    <div class="btn">
+        <button onclick="cetakPDF()">Cetak / Simpan PDF</button>
+    </div>
+
+</div>
+
+<script>
+function cetakPDF() {
+    window.print();
+}
+</script>
+
+</body>
+</html>
