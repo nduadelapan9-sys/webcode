@@ -1,120 +1,167 @@
-http://0.0.0.0:1994/Server.html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Formulir Cetak PDF</title>
+<title>NORI AUDIO</title>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background: url('background.jpg') no-repeat center center fixed;
-        background-size: cover;
-    }
+body {
+    font-family: Arial;
+    background: #f2f2f2;
+    padding: 80px;
+}
 
-    .container {
-        width: 950px;
-        margin: 20px auto;
-        background: rgba(255,255,255,0.9);
-        padding: 30px;
-        border-radius: 80px;
-    }
+.container {
+    width: 300px;
+    margin: auto;
+}
 
-    .logo {
-        text-align: center;
-        margin-bottom: 15px;
-    }
+.form {
+    background: skyblue;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
 
-    .logo img {
-        width: 500px;
-    }
+input, textarea {
+    width: 90%;
+    padding: 4px;
+    margin: 6px 0;
+}
 
-    h2 {
-        text-align: center;
-        margin-bottom: 15px;
-    }
+button {
+    padding: 10px;
+    background: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 
-    .form-group {
-        margin-bottom: 15px;
-    }
+/* KWITANSI */
+.kwitansi {
+    position: relative;
+    width: 600px;
+    padding: 10px;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #000;
+}
 
-    label {
-        display: block;
-        font-weight: bold;
-    }
+.kwitansi img.logo {
+    width: 200px;
+    margin: 10px;
+}
 
-    input, textarea {
-        width: 100%;
-        padding: 9px;
-        margin-top: 5px;
-    }
+.row {
+    display: flex;
+    justify-content: space-between;
+}
 
-    .btn {
-        margin-top: 20px;
-        text-align: center;
-    }
+.underline {
+    border-bottom: 1px solid #000;
+    display: inline-block;
+    min-width: 300px;
+}
 
-    button {
-        padding: 10px 20px;
-        font-size: 20px;
-        cursor: pointer;
-    }
-
-    /* Style khusus saat print */
-    @media print {
-        button {
-            display: none;
-        }
-    }
+.tanda-tangan {
+    margin-top: 50px;
+    text-align: right;
+}
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
-    
-    <div class="logo">
-        <img src="logo.png" alt="Logo">
-    </div>
 
-    <h2>NOTA NR AUDIO PRODUCTION</h2>
+<div class="form">
+<h3>Nota NR AUDIO</h3>
 
-    <div class="form-group">
-        <label>NAMA</label>
-        <input type="text">
-    </div>
+<input type="file" id="logo">
+<input type="file" id="bg">
 
-    <div class="form-group">
-        <label>HARGA DP</label>
-        <input type="angka">
-    </div>
-    
-    <div class="form-group">
-        <label>TOTAL HARGA SEWA</label>
-        <input type="angka">
-    </div>
-    
-    <div class="form-group">
-        <label>KETERANGAN</label>
-        <input type="text">
-    </div>
-     
-    <div class="form-group">
-        <label>ALAMAT</label>
-        <textarea rows="4"></textarea>
-    </div>
+<input type="text" id="nama" placeholder="Nama">
+<input type="text" id="alamat" placeholder="Alamat">
+<input type="number" id="rupiah" placeholder="Nominal (Rp)">
+<textarea id="keterangan" placeholder="Keterangan"></textarea>
 
-    <div class="btn">
-        <button onclick="cetakPDF()">Cetak / Simpan PDF</button>
+<button onclick="buatKwitansi()">Generate</button>
+<button onclick="downloadPDF()">Download PDF</button>
+</div>
+
+<div id="kwitansi" class="kwitansi">
+
+<div class="row">
+    <img id="logoPreview" class="logo">
+    <div>
+    <h2>NORI AUDIO(Sound & Lighting)</h2>
     </div>
+</div>
+
+<p>Nama : <span id="tNama" class="underline"></span></p>
+<p>Alamat : <span id="tAlamat" class="underline"></span></p>
+<p>Uang sejumlah : Rp <span id="tRupiah" class="underline"></span></p>
+<p>Keterangan/Acara :</p>
+<p id="tKeterangan" class="underline"></p>
+
+<div class="tanda-tangan">
+    <p>Hormat Kami</p>
+    <br><br>
+    <p>(NR AUDIO JEMBER)</p>
+</div>
 
 </div>
 
+</div>
+
+<!-- LIBRARY PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
-function cetakPDF() {
-    window.print();
+let bgImage = "";
+
+document.getElementById("bg").addEventListener("change", function(e){
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.onload = function(event){
+        bgImage = event.target.result;
+        document.getElementById("kwitansi").style.backgroundImage = "url("+bgImage+")";
+    }
+    reader.readAsDataURL(file);
+});
+
+document.getElementById("logo").addEventListener("change", function(e){
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.onload = function(event){
+        document.getElementById("logoPreview").src = event.target.result;
+    }
+    reader.readAsDataURL(file);
+});
+
+function buatKwitansi(){
+    document.getElementById("tNama").innerText = document.getElementById("nama").value;
+    document.getElementById("tAlamat").innerText = document.getElementById("alamat").value;
+    document.getElementById("tRupiah").innerText = document.getElementById("rupiah").value;
+    document.getElementById("tKeterangan").innerText = document.getElementById("keterangan").value;
+}
+
+async function downloadPDF(){
+    const { jsPDF } = window.jspdf;
+
+    const el = document.getElementById("kwitansi");
+
+    html2canvas(el).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const width = 210;
+        const height = (canvas.height * width) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, width, height);
+        pdf.save("kwitansi.pdf");
+    });
 }
 </script>
 
