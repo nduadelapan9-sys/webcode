@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NORI AUDIO</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+.form{
+    background:skyblue;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.form h3{
+    margin-top:0;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+    box-sizing:border-box;
+}
+
+button{
+    padding:10px 15px;
+    margin-top:10px;
+    background:blue;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:darkblue;
+}
+
+/* KWITANSI */
+.kwitansi{
+    position:relative;
+    width:100%;
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+    background:white;
+    background-size:cover;
+    background-position:center;
+    border:2px solid #000;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+.kwitansi img.logo{
+    width:150px;
+    height:auto;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.underline{
+    border-bottom:1px solid #000;
+    display:inline-block;
+    min-width:300px;
+    padding:3px;
+}
+
+#tKeterangan{
+    min-height:50px;
+    display:block;
+}
+
+.tanda-tangan{
+    margin-top:60px;
+    text-align:right;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="form">
+        <h3>Nota NR AUDIO</h3>
+
+        <label>Upload Logo</label>
+        <input type="file" id="logo" accept="image/*">
+
+        <label>Upload Background</label>
+        <input type="file" id="bg" accept="image/*">
+
+        <input type="text" id="nama" placeholder="Nama">
+        <input type="text" id="alamat" placeholder="Alamat">
+        <input type="number" id="rupiah" placeholder="Nominal (Rp)">
+        <textarea id="keterangan" placeholder="Keterangan"></textarea>
+
+        <button onclick="buatKwitansi()">Generate</button>
+        <button onclick="downloadPDF()">Download PDF</button>
+    </div>
+
+    <!-- KWITANSI -->
+    <div id="kwitansi" class="kwitansi">
+
+        <div class="row">
+            <img id="logoPreview" class="logo" src="" alt="Logo">
+            <div>
+                <h2>NORI AUDIO</h2>
+                <p>Sound & Lighting</p>
+            </div>
+        </div>
+
+        <p>Nama :
+            <span id="tNama" class="underline"></span>
+        </p>
+
+        <p>Alamat :
+            <span id="tAlamat" class="underline"></span>
+        </p>
+
+        <p>Uang sejumlah :
+            Rp <span id="tRupiah" class="underline"></span>
+        </p>
+
+        <p>Keterangan / Acara :</p>
+        <p id="tKeterangan" class="underline"></p>
+
+        <div class="tanda-tangan">
+            <p>Hormat Kami</p>
+            <br><br><br>
+            <p><b>(NR AUDIO JEMBER)</b></p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- LIBRARY PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+// Upload Background
+document.getElementById("bg").addEventListener("change", function(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+        document.getElementById("kwitansi").style.backgroundImage =
+            `url(${event.target.result})`;
+    };
+
+    reader.readAsDataURL(file);
+});
+
+// Upload Logo
+document.getElementById("logo").addEventListener("change", function(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+        document.getElementById("logoPreview").src =
+            event.target.result;
+    };
+
+    reader.readAsDataURL(file);
+});
+
+// Format Rupiah
+function formatRupiah(angka){
+    return new Intl.NumberFormat('id-ID').format(angka);
+}
+
+// Generate Nota
+function buatKwitansi(){
+
+    const nama = document.getElementById("nama").value;
+    const alamat = document.getElementById("alamat").value;
+    const rupiah = document.getElementById("rupiah").value;
+    const ket = document.getElementById("keterangan").value;
+
+    document.getElementById("tNama").innerText = nama;
+    document.getElementById("tAlamat").innerText = alamat;
+
+    document.getElementById("tRupiah").innerText =
+        formatRupiah(rupiah);
+
+    document.getElementById("tKeterangan").innerText = ket;
+}
+
+// Download PDF
+async function downloadPDF(){
+
+    const { jsPDF } = window.jspdf;
+
+    const element = document.getElementById("kwitansi");
+
+    const canvas = await html2canvas(element,{
+        scale:2
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p","mm","a4");
+
+    const pdfWidth = 210;
+    const pdfHeight =
+        (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(
+        imgData,
+        "PNG",
+        0,
+        0,
+        pdfWidth,
+        pdfHeight
+    );
+
+    pdf.save("kwitansi-nori-audio.pdf");
+}
+</script>
+
+</body>
+</html>
