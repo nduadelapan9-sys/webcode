@@ -9,7 +9,9 @@
 body{
     font-family: Arial, sans-serif;
     background:#f2f2f2;
-    padding:20px;
+    padding:15px;
+    margin:0;
+    overflow-x:hidden;
 }
 
 .container{
@@ -27,16 +29,19 @@ body{
 
 .form h3{
     margin-top:0;
+    text-align:center;
 }
 
 input,
-textarea{
+textarea,
+select{
     width:100%;
     padding:10px;
     margin:8px 0;
     border-radius:5px;
     border:1px solid #ccc;
     box-sizing:border-box;
+    font-size:15px;
 }
 
 button{
@@ -47,6 +52,8 @@ button{
     border:none;
     border-radius:5px;
     cursor:pointer;
+    width:100%;
+    font-size:16px;
 }
 
 button:hover{
@@ -60,30 +67,38 @@ button:hover{
     max-width:700px;
     margin:auto;
     padding:20px;
+    padding-bottom:80px;
     background:white;
     background-size:cover;
     background-position:center;
     border:2px solid #000;
     box-shadow:0 0 10px rgba(0,0,0,0.2);
+    overflow:hidden;
+    overflow:visible !important;
 }
 
 .kwitansi img.logo{
-    width:150px;
+    width:170px;
+    max-width:45%;
     height:auto;
+    object-fit:contain;
 }
 
 .row{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    gap:10px;
     margin-bottom:20px;
+    flex-wrap:wrap;
 }
 
 .underline{
     border-bottom:1px solid #000;
     display:inline-block;
-    min-width:300px;
+    min-width:200px;
     padding:3px;
+    word-break:break-word;
 }
 
 #tKeterangan{
@@ -92,8 +107,106 @@ button:hover{
 }
 
 .tanda-tangan{
+    margin-top:80px;
+    padding-bottom:20px;
+    text-align:center;
+    width:220px;
+    margin-left:auto;
+}
+
+.tanda-tangan{
     margin-top:60px;
-    text-align:right;
+    text-align:center;
+    width:220px;
+    margin-left:auto;
+}
+
+.hormat{
+    margin-bottom:5px;
+    font-size:16px;
+}
+
+.img-ttd{
+    width:140px;
+    max-height:90px;
+    object-fit:contain;
+    display:block;
+    margin:0 auto;
+}
+
+.nama-ttd{
+    margin-top:5px;
+    border-top:1px solid #000;
+    padding-top:5px;
+    font-size:14px;
+}
+
+.info-audio{
+    text-align:center;
+    line-height:1.2;
+    margin-top:-5px;
+}
+
+.info-audio p{
+    margin:3px 0;
+    font-size:14px;
+}
+
+.info-audio hr{
+    border:0;
+    border-top:1px solid #000;
+    width:180px;
+    margin:4px auto;
+}
+
+/* STAMPEL */
+.stempel{
+    position:absolute;
+    top:250px;
+    right:40px;
+    transform:rotate(-15deg);
+    border:5px solid red;
+    color:red;
+    padding:10px 20px;
+    font-size:35px;
+    font-weight:bold;
+    border-radius:10px;
+    opacity:0.8;
+    display:none;
+    background:rgba(255,255,255,0.5);
+}
+
+.info-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+@media(max-width:600px){
+
+    .kwitansi{
+        padding:15px;
+    }
+
+    .kwitansi img.logo{
+        width:90px;
+    }
+
+    .underline{
+        min-width:100%;
+    }
+
+    .stempel{
+        font-size:24px;
+        top:300px;
+        right:20px;
+    }
+
+    .tanda-tangan{
+        text-align:center;
+    }
 }
 </style>
 </head>
@@ -103,7 +216,9 @@ button:hover{
 <div class="container">
 
     <div class="form">
-        <h3>Nota NR AUDIO</h3>
+        <h3>NOTA (NR) NORI AUDIO</h3>
+        <h6>@2026 Ariyono</h6>
+        <hr>
 
         <label>Upload Logo</label>
         <input type="file" id="logo" accept="image/*">
@@ -111,10 +226,20 @@ button:hover{
         <label>Upload Background</label>
         <input type="file" id="bg" accept="image/*">
 
+         <label>Upload Tanda Tangan</label>
+        <input type="file" id="ttd" accept="image/*">
+
         <input type="text" id="nama" placeholder="Nama">
         <input type="text" id="alamat" placeholder="Alamat">
         <input type="number" id="rupiah" placeholder="Nominal (Rp)">
+        
         <textarea id="keterangan" placeholder="Keterangan"></textarea>
+
+        <label>Status Pembayaran</label>
+        <select id="status">
+            <option value="LUNAS">LUNAS</option>
+            <option value="DP">DP</option>
+        </select>
 
         <button onclick="buatKwitansi()">Generate</button>
         <button onclick="downloadPDF()">Download PDF</button>
@@ -123,11 +248,37 @@ button:hover{
     <!-- KWITANSI -->
     <div id="kwitansi" class="kwitansi">
 
+        <!-- STAMPEL -->
+        <div id="stempel" class="stempel">
+            LUNAS
+        </div>
+
+        <div class="info-top">
+    <div>
+        <div>
+            <b>Tanggal :</b>
+            <span id="tanggal"></span>
+        </div>
+
+        <div style="margin-top:5px;">
+            <b>Pukul :</b>
+            <span id="jam"></span> WIB
+        </div>
+    </div>
+</div>
+
         <div class="row">
             <img id="logoPreview" class="logo" src="" alt="Logo">
-            <div>
-                <h2>NORI AUDIO</h2>
-                <p>Sound & Lighting</p>
+
+        <div>
+            <h2>(NR) NORI AUDIO JEMBER</h2>
+            <div class="info-audio">
+            <p>🔊 PROFESIONAL SOUND & LIGHTING 🔊</p>
+            <hr>
+            <p>🏠 Jember Kota Gebang-Kebonagung</p>
+            <p>📞 087771549723/081703033994</p>
+            </div>
+                
             </div>
         </div>
 
@@ -147,10 +298,17 @@ button:hover{
         <p id="tKeterangan" class="underline"></p>
 
         <div class="tanda-tangan">
-            <p>Hormat Kami</p>
-            <br><br><br>
-            <p><b>(NR AUDIO JEMBER)</b></p>
-        </div>
+
+        <p class="hormat">Hormat Kami</p>
+
+        <!-- TTD -->
+        <img id="ttdPreview" class="img-ttd" src="">
+
+        <p class="nama-ttd">
+        <b>(NR AUDIO JEMBER)</b>
+        </p>
+
+    </div>
 
     </div>
 
@@ -162,6 +320,43 @@ button:hover{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
+
+// Tanggal otomatis
+function tampilTanggal(){
+
+    const today = new Date();
+
+    // TANGGAL
+    const opsi = {
+        day:'2-digit',
+        month:'long',
+        year:'numeric'
+    };
+
+    document.getElementById("tanggal").innerText =
+        today.toLocaleDateString('id-ID', opsi);
+
+    // JAM
+    const jam =
+        String(today.getHours()).padStart(2,'0');
+
+    const menit =
+        String(today.getMinutes()).padStart(2,'0');
+
+    const detik =
+        String(today.getSeconds()).padStart(2,'0');
+
+    document.getElementById("jam").innerText =
+        jam + ":" + menit + ":" + detik;
+}
+
+// update realtime
+setInterval(tampilTanggal, 1000);
+
+tampilTanggal();
+
+tampilTanggal();
+
 // Upload Background
 document.getElementById("bg").addEventListener("change", function(e){
 
@@ -208,14 +403,30 @@ function buatKwitansi(){
     const alamat = document.getElementById("alamat").value;
     const rupiah = document.getElementById("rupiah").value;
     const ket = document.getElementById("keterangan").value;
+    const status = document.getElementById("status").value;
 
     document.getElementById("tNama").innerText = nama;
+
     document.getElementById("tAlamat").innerText = alamat;
 
     document.getElementById("tRupiah").innerText =
         formatRupiah(rupiah);
 
     document.getElementById("tKeterangan").innerText = ket;
+
+    // STAMPEL
+    const stempel = document.getElementById("stempel");
+
+    stempel.style.display = "block";
+    stempel.innerText = status;
+
+    if(status == "DP"){
+        stempel.style.color = "orange";
+        stempel.style.borderColor = "orange";
+    }else{
+        stempel.style.color = "red";
+        stempel.style.borderColor = "red";
+    }
 }
 
 // Download PDF
@@ -223,19 +434,35 @@ async function downloadPDF(){
 
     const { jsPDF } = window.jspdf;
 
-    const element = document.getElementById("kwitansi");
+    const element =
+        document.getElementById("kwitansi");
 
+    // capture html
     const canvas = await html2canvas(element,{
-        scale:2
+        scale:3,
+        useCORS:true,
+        scrollY:0
     });
 
-    const imgData = canvas.toDataURL("image/png");
+    const imgData =
+        canvas.toDataURL("image/png");
 
-    const pdf = new jsPDF("p","mm","a4");
+    // ukuran canvas
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
 
+    // konversi ke mm
     const pdfWidth = 210;
+
     const pdfHeight =
-        (canvas.height * pdfWidth) / canvas.width;
+        (imgHeight * pdfWidth) / imgWidth;
+
+    // buat pdf sesuai tinggi konten
+    const pdf = new jsPDF({
+        orientation:"portrait",
+        unit:"mm",
+        format:[pdfWidth, pdfHeight]
+    });
 
     pdf.addImage(
         imgData,
@@ -248,6 +475,24 @@ async function downloadPDF(){
 
     pdf.save("kwitansi-nori-audio.pdf");
 }
+
+// Upload Tanda Tangan
+document.getElementById("ttd").addEventListener("change", function(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        document.getElementById("ttdPreview").src =
+            event.target.result;
+    };
+
+    reader.readAsDataURL(file);
+});
 </script>
 
 </body>
