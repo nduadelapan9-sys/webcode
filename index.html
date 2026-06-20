@@ -1,499 +1,633 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-<meta charset="UTF-8">
+<title>Pendaftaran Nory Audio</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NORI AUDIO</title>
 
 <style>
+
 body{
-    font-family: Arial, sans-serif;
+
+    font-family:Arial, sans-serif;
     background:#f2f2f2;
-    padding:15px;
     margin:0;
-    overflow-x:hidden;
+    padding:10px;
+
 }
 
 .container{
-    max-width:900px;
+
+    width:100%;
+    max-width:850px;
     margin:auto;
-}
-
-.form{
-    background:skyblue;
-    padding:20px;
+    background:rgb(212, 224, 218);
+    padding:15px;
+    box-sizing:border-box;
     border-radius:10px;
-    margin-bottom:20px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    box-shadow:0 0 10px #aaa;
+
 }
 
-.form h3{
-    margin-top:0;
+h2{
     text-align:center;
+}
+
+.menu{
+    display:flex;
+    gap:10px;
+}
+
+.menu button{
+    width:50%;
+    background:#1ae4da;
+    color: rgb(1, 4, 19);
+    font-weight: bold;
 }
 
 input,
 textarea,
 select{
+
     width:100%;
-    padding:10px;
-    margin:8px 0;
-    border-radius:5px;
-    border:1px solid #ccc;
+    padding:12px;
     box-sizing:border-box;
-    font-size:15px;
+    font-size:16px;
+
 }
 
+
+textarea{
+    height:70px;
+}
+
+
 button{
-    padding:10px 15px;
-    margin-top:10px;
-    background:blue;
+
+    padding:10px;
+    width:100%;
+    background:#007bff;
     color:white;
     border:none;
     border-radius:5px;
     cursor:pointer;
+
+}
+
+
+table{
+
     width:100%;
-    font-size:16px;
+    margin-top:20px;
+    border-collapse:collapse;
+
 }
 
-button:hover{
-    background:darkblue;
+
+th{
+
+background:#007bff;
+color:white;
+
 }
 
-/* KWITANSI */
-.kwitansi{
-    position:relative;
+
+th,td{
+
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+
+}
+
+
+#history{
+display:none;
+}
+
+
+.hapus{
+
+background:red;
+
+}
+
+.header{
+
+display:flex;
+align-items:center;
+justify-content:center;
+gap:15px;
+margin-bottom:20px;
+
+}
+
+
+.logo{
+
+width:70px;
+height:70px;
+object-fit:contain;
+
+}
+
+
+.header h2{
+
+margin:0;
+
+}
+
+@media screen and (max-width:600px){
+
+
+body{
+
+    font-size:14px;
+
+}
+
+
+.container{
+
+    width:95%;
+    padding:12px;
+
+}
+
+
+
+.header{
+
+    flex-direction:column;
+    text-align:center;
+
+}
+
+
+.logo{
+
+    width:60px;
+    height:60px;
+
+}
+
+
+
+.menu{
+
+    flex-direction:column;
+
+}
+
+
+.menu button{
+
     width:100%;
-    max-width:700px;
-    margin:auto;
-    padding:20px;
-    padding-bottom:80px;
-    background:white;
-    background-size:cover;
-    background-position:center;
-    border:2px solid #000;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
-    overflow:hidden;
-    overflow:visible !important;
+
 }
 
-.kwitansi img.logo{
-    width:170px;
-    max-width:45%;
-    height:auto;
-    object-fit:contain;
-}
 
-.row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin-bottom:20px;
-    flex-wrap:wrap;
-}
 
-.underline{
-    border-bottom:1px solid #000;
-    display:inline-block;
-    min-width:200px;
-    padding:3px;
-    word-break:break-word;
-}
+input,
+textarea,
+select,
+button{
 
-#tKeterangan{
-    min-height:50px;
-    display:block;
-}
-
-.tanda-tangan{
-    margin-top:80px;
-    padding-bottom:20px;
-    text-align:center;
-    width:220px;
-    margin-left:auto;
-}
-
-.tanda-tangan{
-    margin-top:60px;
-    text-align:center;
-    width:220px;
-    margin-left:auto;
-}
-
-.hormat{
-    margin-bottom:5px;
     font-size:16px;
+
 }
 
-.img-ttd{
-    width:140px;
-    max-height:90px;
-    object-fit:contain;
+
+
+table{
+
+    font-size:12px;
+
     display:block;
-    margin:0 auto;
+    overflow-x:auto;
+    white-space:nowrap;
+
 }
 
-.nama-ttd{
-    margin-top:5px;
-    border-top:1px solid #000;
-    padding-top:5px;
-    font-size:14px;
+
+
+th,td{
+
+    padding:6px;
+
 }
 
-.info-audio{
-    text-align:center;
-    line-height:1.2;
-    margin-top:-5px;
-}
 
-.info-audio p{
-    margin:3px 0;
-    font-size:14px;
-}
 
-.info-audio hr{
-    border:0;
-    border-top:1px solid #000;
-    width:180px;
-    margin:4px auto;
-}
-
-/* STAMPEL */
-.stempel{
-    position:absolute;
-    top:250px;
-    right:40px;
-    transform:rotate(-15deg);
-    border:5px solid red;
-    color:red;
-    padding:10px 20px;
-    font-size:35px;
-    font-weight:bold;
-    border-radius:10px;
-    opacity:0.8;
-    display:none;
-    background:rgba(255,255,255,0.5);
-}
-
-.info-top{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:15px;
-    flex-wrap:wrap;
-    gap:10px;
 }
 
 @media(max-width:600px){
 
-    .kwitansi{
-        padding:15px;
-    }
 
-    .kwitansi img.logo{
-        width:90px;
-    }
+h2{
 
-    .underline{
-        min-width:100%;
-    }
+    font-size:22px;
 
-    .stempel{
-        font-size:24px;
-        top:300px;
-        right:20px;
-    }
-
-    .tanda-tangan{
-        text-align:center;
-    }
 }
+
+
+.logo{
+
+    width:55px;
+    height:55px;
+
+}
+
+
+.menu button{
+
+    font-size:16px;
+    padding:14px;
+
+}
+
+
+
+button{
+
+    font-size:16px;
+
+}
+
+
+
+table{
+
+    width:100%;
+    font-size:13px;
+
+}
+
+
+
+#history{
+
+    overflow-x:auto;
+
+}
+
+
+
+input,
+textarea,
+select{
+
+    border-radius:8px;
+
+}
+
+
+
+}
+
+
 </style>
+
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <div class="form">
-        <h3>NOTA (NR) NORI AUDIO</h3>
-        <h6>@2026 Ariyono</h6>
-        <hr>
 
-        <label>Upload Logo</label>
-        <input type="file" id="logo" accept="image/*">
+<div class="header">
 
-        <label>Upload Background</label>
-        <input type="file" id="bg" accept="image/*">
+<img src="logo.png" class="logo">
 
-         <label>Upload Tanda Tangan</label>
-        <input type="file" id="ttd" accept="image/*">
-
-        <input type="text" id="nama" placeholder="Nama">
-        <input type="text" id="alamat" placeholder="Alamat">
-        <input type="number" id="rupiah" placeholder="Nominal (Rp)">
-        
-        <textarea id="keterangan" placeholder="Keterangan"></textarea>
-
-        <label>Status Pembayaran</label>
-        <select id="status">
-            <option value="LUNAS">LUNAS</option>
-            <option value="DP">DP</option>
-        </select>
-
-        <button onclick="buatKwitansi()">Generate</button>
-        <button onclick="downloadPDF()">Download PDF</button>
-    </div>
-
-    <!-- KWITANSI -->
-    <div id="kwitansi" class="kwitansi">
-
-        <!-- STAMPEL -->
-        <div id="stempel" class="stempel">
-            LUNAS
-        </div>
-
-        <div class="info-top">
-    <div>
-        <div>
-            <b>Tanggal :</b>
-            <span id="tanggal"></span>
-        </div>
-
-        <div style="margin-top:5px;">
-            <b>Pukul :</b>
-            <span id="jam"></span> WIB
-        </div>
-    </div>
-</div>
-
-        <div class="row">
-            <img id="logoPreview" class="logo" src="" alt="Logo">
-
-        <div>
-            <h2>(NR) NORI AUDIO JEMBER</h2>
-            <div class="info-audio">
-            <p>🔊 PROFESIONAL SOUND & LIGHTING 🔊</p>
-            <hr>
-            <p>🏠 Jember Kota Gebang-Kebonagung</p>
-            <p>📞 087771549723/081703033994</p>
-            </div>
-                
-            </div>
-        </div>
-
-        <p>Nama :
-            <span id="tNama" class="underline"></span>
-        </p>
-
-        <p>Alamat :
-            <span id="tAlamat" class="underline"></span>
-        </p>
-
-        <p>Uang sejumlah :
-            Rp <span id="tRupiah" class="underline"></span>
-        </p>
-
-        <p>Keterangan / Acara :</p>
-        <p id="tKeterangan" class="underline"></p>
-
-        <div class="tanda-tangan">
-
-        <p class="hormat">Hormat Kami</p>
-
-        <!-- TTD -->
-        <img id="ttdPreview" class="img-ttd" src="">
-
-        <p class="nama-ttd">
-        <b>(NR AUDIO JEMBER)</b>
-        </p>
-
-    </div>
-
-    </div>
+<h2>PENDAFTARAN NORY AUDIO</h2>
+<p>[Website by Nr Audio - 087771549723]</p>
 
 </div>
 
-<!-- LIBRARY PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<div class="menu">
+
+<button onclick="showForm()">
+Pendaftaran
+</button>
+
+<button onclick="loginAdmin()">
+History
+</button>
+
+</div>
+
+
+
+<div id="form">
+
+
+<form onsubmit="simpanData(event)">
+
+
+<label>Nama Penyewa</label>
+<input type="text" id="nama" required>
+
+
+<label>Nomor HP</label>
+<input type="text" id="hp" required>
+
+
+<label>Tanggal Acara</label>
+<input type="date" id="tanggal" required>
+
+
+<label>Alamat Acara</label>
+<textarea id="alamat" required></textarea>
+
+
+<label>Keterangan</label>
+<textarea id="ket"></textarea>
+
+
+<label>Pembayaran</label>
+
+<select id="bayar">
+
+<option value="DP">
+DP
+</option>
+
+<option value="Lunas">
+Lunas
+</option>
+
+</select>
+
+
+<label>Nominal Rp</label>
+
+<input 
+type="text" 
+id="rupiah" 
+placeholder="Contoh: 500.000"
+oninput="formatRupiah(this)"
+required>
+
+
+<button>
+Simpan
+</button>
+
+
+</form>
+
+</div>
+
+
+<div id="history">
+
+
+<h3>History</h3>
+
+
+<table>
+
+
+<tr>
+
+<th>No</th>
+<th>Nama</th>
+<th>HP</th>
+<th>Tanggal</th>
+<th>Alamat</th>
+<th>Keterangan</th>
+<th>Status</th>
+<th>Rp</th>
+<th>Aksi</th>
+
+</tr>
+
+
+<tbody id="tabelHistory">
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</div>
+
+
 
 <script>
 
-// Tanggal otomatis
-function tampilTanggal(){
+const adminUser = "nraudio";
+const adminPass = "nory28";
 
-    const today = new Date();
+function loginAdmin(){
 
-    // TANGGAL
-    const opsi = {
-        day:'2-digit',
-        month:'long',
-        year:'numeric'
-    };
 
-    document.getElementById("tanggal").innerText =
-        today.toLocaleDateString('id-ID', opsi);
+let user = prompt("Username Admin:");
 
-    // JAM
-    const jam =
-        String(today.getHours()).padStart(2,'0');
+let pass = prompt("Password Admin:");
 
-    const menit =
-        String(today.getMinutes()).padStart(2,'0');
 
-    const detik =
-        String(today.getSeconds()).padStart(2,'0');
 
-    document.getElementById("jam").innerText =
-        jam + ":" + menit + ":" + detik;
+if(user === adminUser && pass === adminPass){
+
+
+    showHistory();
+
+
+}
+else{
+
+
+    alert("Akses ditolak! Anda bukan Owner Nory Audio");
+
+
 }
 
-// update realtime
-setInterval(tampilTanggal, 1000);
 
-tampilTanggal();
+}
 
-tampilTanggal();
+function simpanData(e){
 
-// Upload Background
-document.getElementById("bg").addEventListener("change", function(e){
+e.preventDefault();
 
-    const file = e.target.files[0];
 
-    if(!file) return;
+let data={
 
-    const reader = new FileReader();
 
-    reader.onload = function(event){
-        document.getElementById("kwitansi").style.backgroundImage =
-            `url(${event.target.result})`;
-    };
+nama:document.getElementById("nama").value,
 
-    reader.readAsDataURL(file);
+hp:document.getElementById("hp").value,
+
+tanggal:document.getElementById("tanggal").value,
+
+alamat:document.getElementById("alamat").value,
+
+ket:document.getElementById("ket").value,
+
+bayar:document.getElementById("bayar").value,
+
+rupiah:document.getElementById("rupiah").value.replace(/\./g,'')
+
+
+};
+
+
+
+let history =
+JSON.parse(localStorage.getItem("penyewa")) || [];
+
+
+
+history.push(data);
+
+
+
+localStorage.setItem(
+"penyewa",
+JSON.stringify(history)
+);
+
+
+
+alert("Data berhasil disimpan");
+
+
+document.querySelector("form").reset();
+
+
+}
+
+
+
+
+
+function showHistory(){
+
+
+document.getElementById("form").style.display="none";
+
+document.getElementById("history").style.display="block";
+
+
+tampilHistory();
+
+
+}
+
+
+
+
+function showForm(){
+
+
+document.getElementById("form").style.display="block";
+
+document.getElementById("history").style.display="none";
+
+
+}
+
+function formatRupiah(input){
+
+    let angka = input.value.replace(/\D/g,'');
+
+    input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+
+}
+
+
+function tampilHistory(){
+
+
+let tabel=document.getElementById("tabelHistory");
+
+
+tabel.innerHTML="";
+
+
+
+let data=
+JSON.parse(localStorage.getItem("penyewa")) || [];
+
+
+
+data.forEach((item,index)=>{
+
+
+let row=tabel.insertRow();
+
+
+
+row.insertCell(0).innerHTML=index+1;
+
+row.insertCell(1).innerHTML=item.nama;
+
+row.insertCell(2).innerHTML=item.hp;
+
+row.insertCell(3).innerHTML=item.tanggal;
+
+row.insertCell(4).innerHTML=item.alamat;
+
+row.insertCell(5).innerHTML=item.ket;
+
+row.insertCell(6).innerHTML=item.bayar;
+
+
+row.insertCell(7).innerHTML=
+"Rp "+Number(item.rupiah).toLocaleString("id-ID");
+
+
+
+row.insertCell(8).innerHTML=
+
+`<button class="hapus" onclick="hapusData(${index})">
+Hapus
+</button>`;
+
+
 });
 
-// Upload Logo
-document.getElementById("logo").addEventListener("change", function(e){
 
-    const file = e.target.files[0];
-
-    if(!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function(event){
-        document.getElementById("logoPreview").src =
-            event.target.result;
-    };
-
-    reader.readAsDataURL(file);
-});
-
-// Format Rupiah
-function formatRupiah(angka){
-    return new Intl.NumberFormat('id-ID').format(angka);
 }
 
-// Generate Nota
-function buatKwitansi(){
 
-    const nama = document.getElementById("nama").value;
-    const alamat = document.getElementById("alamat").value;
-    const rupiah = document.getElementById("rupiah").value;
-    const ket = document.getElementById("keterangan").value;
-    const status = document.getElementById("status").value;
 
-    document.getElementById("tNama").innerText = nama;
 
-    document.getElementById("tAlamat").innerText = alamat;
+function hapusData(index){
 
-    document.getElementById("tRupiah").innerText =
-        formatRupiah(rupiah);
 
-    document.getElementById("tKeterangan").innerText = ket;
+let data=
+JSON.parse(localStorage.getItem("penyewa"));
 
-    // STAMPEL
-    const stempel = document.getElementById("stempel");
 
-    stempel.style.display = "block";
-    stempel.innerText = status;
+data.splice(index,1);
 
-    if(status == "DP"){
-        stempel.style.color = "orange";
-        stempel.style.borderColor = "orange";
-    }else{
-        stempel.style.color = "red";
-        stempel.style.borderColor = "red";
-    }
+
+
+localStorage.setItem(
+"penyewa",
+JSON.stringify(data)
+);
+
+
+
+tampilHistory();
+
+
 }
 
-// Download PDF
-async function downloadPDF(){
 
-    const { jsPDF } = window.jspdf;
-
-    const element =
-        document.getElementById("kwitansi");
-
-    // capture html
-    const canvas = await html2canvas(element,{
-        scale:3,
-        useCORS:true,
-        scrollY:0
-    });
-
-    const imgData =
-        canvas.toDataURL("image/png");
-
-    // ukuran canvas
-    const imgWidth = canvas.width;
-    const imgHeight = canvas.height;
-
-    // konversi ke mm
-    const pdfWidth = 210;
-
-    const pdfHeight =
-        (imgHeight * pdfWidth) / imgWidth;
-
-    // buat pdf sesuai tinggi konten
-    const pdf = new jsPDF({
-        orientation:"portrait",
-        unit:"mm",
-        format:[pdfWidth, pdfHeight]
-    });
-
-    pdf.addImage(
-        imgData,
-        "PNG",
-        0,
-        0,
-        pdfWidth,
-        pdfHeight
-    );
-
-    pdf.save("kwitansi-nori-audio.pdf");
-}
-
-// Upload Tanda Tangan
-document.getElementById("ttd").addEventListener("change", function(e){
-
-    const file = e.target.files[0];
-
-    if(!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function(event){
-
-        document.getElementById("ttdPreview").src =
-            event.target.result;
-    };
-
-    reader.readAsDataURL(file);
-});
 </script>
+
 
 </body>
 </html>
