@@ -486,11 +486,21 @@
                 row.insertCell(0).innerHTML = index + 1;
                 row.insertCell(1).innerHTML = `<strong style="color:var(--text-main);">${item.nama}</strong>`;
                 
-                // Format WA number to make it clickable
-                let waNumber = item.hp.replace(/^0/,'62');
-                row.insertCell(2).innerHTML = `<a href="https://wa.me/${waNumber}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:500;">${item.hp}</a>`;
+                // Format WA number to make it clickable (convert to string first because Google Sheets might send it as a number)
+                let hpStr = String(item.hp);
+                let waNumber = hpStr.replace(/^0/,'62');
+                row.insertCell(2).innerHTML = `<a href="https://wa.me/${waNumber}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:500;">${hpStr}</a>`;
                 
-                row.insertCell(3).innerHTML = item.tanggal;
+                // Format Tanggal
+                let tgl = item.tanggal;
+                try {
+                    let d = new Date(item.tanggal);
+                    if(!isNaN(d)) {
+                        tgl = d.toLocaleDateString("id-ID");
+                    }
+                } catch(e) {}
+                row.insertCell(3).innerHTML = tgl;
+
                 row.insertCell(4).innerHTML = item.alamat;
                 row.insertCell(5).innerHTML = item.ket;
                 
