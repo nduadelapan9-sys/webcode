@@ -1,633 +1,547 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<title>Pendaftaran Nory Audio</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-
-body{
-
-    font-family:Arial, sans-serif;
-    background:#f2f2f2;
-    margin:0;
-    padding:10px;
-
-}
-
-.container{
-
-    width:100%;
-    max-width:850px;
-    margin:auto;
-    background:rgb(212, 224, 218);
-    padding:15px;
-    box-sizing:border-box;
-    border-radius:10px;
-    box-shadow:0 0 10px #aaa;
-
-}
-
-h2{
-    text-align:center;
-}
-
-.menu{
-    display:flex;
-    gap:10px;
-}
-
-.menu button{
-    width:50%;
-    background:#1ae4da;
-    color: rgb(1, 4, 19);
-    font-weight: bold;
-}
-
-input,
-textarea,
-select{
-
-    width:100%;
-    padding:12px;
-    box-sizing:border-box;
-    font-size:16px;
-
-}
-
-
-textarea{
-    height:70px;
-}
-
-
-button{
-
-    padding:10px;
-    width:100%;
-    background:#007bff;
-    color:white;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-
-}
-
-
-table{
-
-    width:100%;
-    margin-top:20px;
-    border-collapse:collapse;
-
-}
-
-
-th{
-
-background:#007bff;
-color:white;
-
-}
-
-
-th,td{
-
-border:1px solid #ddd;
-padding:8px;
-text-align:center;
-
-}
-
-
-#history{
-display:none;
-}
-
-
-.hapus{
-
-background:red;
-
-}
-
-.header{
-
-display:flex;
-align-items:center;
-justify-content:center;
-gap:15px;
-margin-bottom:20px;
-
-}
-
-
-.logo{
-
-width:70px;
-height:70px;
-object-fit:contain;
-
-}
-
-
-.header h2{
-
-margin:0;
-
-}
-
-@media screen and (max-width:600px){
-
-
-body{
-
-    font-size:14px;
-
-}
-
-
-.container{
-
-    width:95%;
-    padding:12px;
-
-}
-
-
-
-.header{
-
-    flex-direction:column;
-    text-align:center;
-
-}
-
-
-.logo{
-
-    width:60px;
-    height:60px;
-
-}
-
-
-
-.menu{
-
-    flex-direction:column;
-
-}
-
-
-.menu button{
-
-    width:100%;
-
-}
-
-
-
-input,
-textarea,
-select,
-button{
-
-    font-size:16px;
-
-}
-
-
-
-table{
-
-    font-size:12px;
-
-    display:block;
-    overflow-x:auto;
-    white-space:nowrap;
-
-}
-
-
-
-th,td{
-
-    padding:6px;
-
-}
-
-
-
-}
-
-@media(max-width:600px){
-
-
-h2{
-
-    font-size:22px;
-
-}
-
-
-.logo{
-
-    width:55px;
-    height:55px;
-
-}
-
-
-.menu button{
-
-    font-size:16px;
-    padding:14px;
-
-}
-
-
-
-button{
-
-    font-size:16px;
-
-}
-
-
-
-table{
-
-    width:100%;
-    font-size:13px;
-
-}
-
-
-
-#history{
-
-    overflow-x:auto;
-
-}
-
-
-
-input,
-textarea,
-select{
-
-    border-radius:8px;
-
-}
-
-
-
-}
-
-
-</style>
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Nory Audio</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --bg-gradient-1: #e0eafc;
+            --bg-gradient-2: #cfdef3;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            padding: 30px;
+            margin-top: 2vh;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .header-text h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .header-text p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .menu {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .menu button {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .menu button.active {
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .menu button:hover:not(.active) {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #f8fafc;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .btn-submit:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* History Section */
+        #history {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px; /* Ensures it scrolls horizontally on small screens */
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f1f5f9;
+        }
+
+        .btn-hapus {
+            padding: 8px 14px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-hapus:hover {
+            background: var(--danger-hover);
+        }
+        
+        .btn-hapus:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px;
+                border-radius: 12px;
+                margin-top: 0;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            .header-text h2 {
+                font-size: 20px;
+            }
+            .menu {
+                flex-direction: column;
+            }
+            .menu button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-
-
 <body>
-
 
 <div class="container">
 
+    <div class="header">
+        <img src="logo.png" class="logo" alt="Logo Nory Audio" onerror="this.style.display='none'">
+        <div class="header-text">
+            <h2>PENDAFTARAN NORY AUDIO</h2>
+            <p>Website by Nr Audio - 087771549723</p>
+        </div>
+    </div>
 
-<div class="header">
+    <div class="menu">
+        <button id="btnPendaftaran" class="active" onclick="showForm()">Pendaftaran Baru</button>
+        <button id="btnHistory" onclick="loginAdmin()">History Pendaftaran</button>
+    </div>
 
-<img src="logo.png" class="logo">
+    <div id="form">
+        <form onsubmit="simpanData(event)">
+            
+            <div class="form-group">
+                <label>Nama Penyewa</label>
+                <input type="text" id="nama" placeholder="Masukkan nama lengkap" required>
+            </div>
 
-<h2>PENDAFTARAN NORY AUDIO</h2>
-<p>[Website by Nr Audio - 087771549723]</p>
+            <div class="form-group">
+                <label>Nomor HP (WhatsApp)</label>
+                <input type="text" id="hp" placeholder="Contoh: 08123456789" required>
+            </div>
 
-</div>
+            <div class="form-group">
+                <label>Tanggal Acara</label>
+                <input type="date" id="tanggal" required>
+            </div>
 
+            <div class="form-group">
+                <label>Alamat Acara</label>
+                <textarea id="alamat" placeholder="Tuliskan alamat lengkap acara..." required></textarea>
+            </div>
 
-<div class="menu">
+            <div class="form-group">
+                <label>Keterangan Tambahan</label>
+                <textarea id="ket" placeholder="Alat yang disewa atau catatan tambahan (Opsional)"></textarea>
+            </div>
 
-<button onclick="showForm()">
-Pendaftaran
-</button>
+            <div class="form-group">
+                <label>Status Pembayaran</label>
+                <select id="bayar">
+                    <option value="DP">DP (Down Payment)</option>
+                    <option value="Lunas">Lunas</option>
+                </select>
+            </div>
 
-<button onclick="loginAdmin()">
-History
-</button>
+            <div class="form-group">
+                <label>Nominal Pembayaran (Rp)</label>
+                <input type="text" id="rupiah" placeholder="Contoh: 500.000" oninput="formatRupiah(this)" required>
+            </div>
 
-</div>
+            <button type="submit" class="btn-submit">Simpan Data</button>
 
+        </form>
+    </div>
 
-
-<div id="form">
-
-
-<form onsubmit="simpanData(event)">
-
-
-<label>Nama Penyewa</label>
-<input type="text" id="nama" required>
-
-
-<label>Nomor HP</label>
-<input type="text" id="hp" required>
-
-
-<label>Tanggal Acara</label>
-<input type="date" id="tanggal" required>
-
-
-<label>Alamat Acara</label>
-<textarea id="alamat" required></textarea>
-
-
-<label>Keterangan</label>
-<textarea id="ket"></textarea>
-
-
-<label>Pembayaran</label>
-
-<select id="bayar">
-
-<option value="DP">
-DP
-</option>
-
-<option value="Lunas">
-Lunas
-</option>
-
-</select>
-
-
-<label>Nominal Rp</label>
-
-<input 
-type="text" 
-id="rupiah" 
-placeholder="Contoh: 500.000"
-oninput="formatRupiah(this)"
-required>
-
-
-<button>
-Simpan
-</button>
-
-
-</form>
-
-</div>
-
-
-<div id="history">
-
-
-<h3>History</h3>
-
-
-<table>
-
-
-<tr>
-
-<th>No</th>
-<th>Nama</th>
-<th>HP</th>
-<th>Tanggal</th>
-<th>Alamat</th>
-<th>Keterangan</th>
-<th>Status</th>
-<th>Rp</th>
-<th>Aksi</th>
-
-</tr>
-
-
-<tbody id="tabelHistory">
-
-</tbody>
-
-
-</table>
-
+    <div id="history">
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>HP (WA)</th>
+                        <th>Tanggal</th>
+                        <th>Alamat</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelHistory">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </div>
-
-
-</div>
-
-
 
 <script>
-
-const adminUser = "nraudio";
-const adminPass = "nory28";
-
-function loginAdmin(){
-
-
-let user = prompt("Username Admin:");
-
-let pass = prompt("Password Admin:");
-
-
-
-if(user === adminUser && pass === adminPass){
-
-
-    showHistory();
-
-
-}
-else{
-
-
-    alert("Akses ditolak! Anda bukan Owner Nory Audio");
-
-
-}
-
-
-}
-
-function simpanData(e){
-
-e.preventDefault();
-
-
-let data={
-
-
-nama:document.getElementById("nama").value,
-
-hp:document.getElementById("hp").value,
-
-tanggal:document.getElementById("tanggal").value,
-
-alamat:document.getElementById("alamat").value,
-
-ket:document.getElementById("ket").value,
-
-bayar:document.getElementById("bayar").value,
-
-rupiah:document.getElementById("rupiah").value.replace(/\./g,'')
-
-
-};
-
-
-
-let history =
-JSON.parse(localStorage.getItem("penyewa")) || [];
-
-
-
-history.push(data);
-
-
-
-localStorage.setItem(
-"penyewa",
-JSON.stringify(history)
-);
-
-
-
-alert("Data berhasil disimpan");
-
-
-document.querySelector("form").reset();
-
-
-}
-
-
-
-
-
-function showHistory(){
-
-
-document.getElementById("form").style.display="none";
-
-document.getElementById("history").style.display="block";
-
-
-tampilHistory();
-
-
-}
-
-
-
-
-function showForm(){
-
-
-document.getElementById("form").style.display="block";
-
-document.getElementById("history").style.display="none";
-
-
-}
-
-function formatRupiah(input){
-
-    let angka = input.value.replace(/\D/g,'');
-
-    input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
-
-}
-
-
-function tampilHistory(){
-
-
-let tabel=document.getElementById("tabelHistory");
-
-
-tabel.innerHTML="";
-
-
-
-let data=
-JSON.parse(localStorage.getItem("penyewa")) || [];
-
-
-
-data.forEach((item,index)=>{
-
-
-let row=tabel.insertRow();
-
-
-
-row.insertCell(0).innerHTML=index+1;
-
-row.insertCell(1).innerHTML=item.nama;
-
-row.insertCell(2).innerHTML=item.hp;
-
-row.insertCell(3).innerHTML=item.tanggal;
-
-row.insertCell(4).innerHTML=item.alamat;
-
-row.insertCell(5).innerHTML=item.ket;
-
-row.insertCell(6).innerHTML=item.bayar;
-
-
-row.insertCell(7).innerHTML=
-"Rp "+Number(item.rupiah).toLocaleString("id-ID");
-
-
-
-row.insertCell(8).innerHTML=
-
-`<button class="hapus" onclick="hapusData(${index})">
-Hapus
-</button>`;
-
-
-});
-
-
-}
-
-
-
-
-function hapusData(index){
-
-
-let data=
-JSON.parse(localStorage.getItem("penyewa"));
-
-
-data.splice(index,1);
-
-
-
-localStorage.setItem(
-"penyewa",
-JSON.stringify(data)
-);
-
-
-
-tampilHistory();
-
-
-}
-
-
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyD6ckdZkgEdAhMVXDTI8_HSIDfugSB2_MSUwhiXYYYB4Hta1ypcNjOaCNtwwJazRI/exec";
+
+    const adminUser = "nraudio";
+    const adminPass = "nory28";
+
+    function loginAdmin(){
+        let user = prompt("Username Admin:");
+        if (user === null) return; 
+        
+        let pass = prompt("Password Admin:");
+        if (pass === null) return; 
+
+        if(user === adminUser && pass === adminPass){
+            showHistory();
+        }
+        else{
+            alert("Akses ditolak! Anda bukan Owner Nory Audio");
+        }
+    }
+
+    function simpanData(e){
+        e.preventDefault();
+
+        let data={
+            action: "insert",
+            nama:document.getElementById("nama").value,
+            hp:document.getElementById("hp").value,
+            tanggal:document.getElementById("tanggal").value,
+            alamat:document.getElementById("alamat").value,
+            ket:document.getElementById("ket").value,
+            bayar:document.getElementById("bayar").value,
+            rupiah:document.getElementById("rupiah").value.replace(/\./g,'')
+        };
+
+        if(scriptURL === "MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI") {
+            alert("Gagal: URL Google Script belum dimasukkan di kode!");
+            return;
+        }
+
+        let btn = e.target.querySelector("button[type='submit']");
+        let originalText = btn.innerHTML;
+        btn.innerHTML = "Menyimpan... ⏳";
+        btn.disabled = true;
+
+        fetch(scriptURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.status === 'success') {
+                alert("Data berhasil disimpan ke Google Sheets!");
+                document.querySelector("form").reset();
+            } else {
+                alert("Gagal menyimpan data");
+            }
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        })
+        .catch(err => {
+            alert("Terjadi kesalahan jaringan.");
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+    }
+
+    function showHistory(){
+        document.getElementById("form").style.display = "none";
+        document.getElementById("history").style.display = "block";
+        
+        document.getElementById("btnPendaftaran").classList.remove("active");
+        document.getElementById("btnHistory").classList.add("active");
+        
+        tampilHistory();
+    }
+
+    function showForm(){
+        document.getElementById("form").style.display = "block";
+        document.getElementById("history").style.display = "none";
+        
+        document.getElementById("btnHistory").classList.remove("active");
+        document.getElementById("btnPendaftaran").classList.add("active");
+    }
+
+    function formatRupiah(input){
+        let angka = input.value.replace(/\D/g,'');
+        input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+    }
+
+    function tampilHistory(){
+        let tabel = document.getElementById("tabelHistory");
+        tabel.innerHTML = "<tr><td colspan='9' style='text-align:center; padding: 30px; color: var(--text-muted); font-weight:500;'>Memuat data dari Google Sheets... ⏳</td></tr>";
+
+        if(scriptURL === "MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI") {
+            tabel.innerHTML="<tr><td colspan='9' style='text-align:center; color: var(--danger); padding: 30px;'>Gagal: URL Google Script belum dimasukkan di kode!</td></tr>";
+            return;
+        }
+
+        fetch(scriptURL)
+        .then(res => res.json())
+        .then(data => {
+            tabel.innerHTML = "";
+
+            if(!data || data.length === 0){
+                tabel.innerHTML = "<tr><td colspan='9' style='text-align:center; color: var(--text-muted); padding: 30px;'>Belum ada data pendaftaran.</td></tr>";
+                return;
+            }
+
+            data.forEach((item,index)=>{
+                let row = tabel.insertRow();
+                row.insertCell(0).innerHTML = index + 1;
+                row.insertCell(1).innerHTML = `<strong style="color:var(--text-main);">${item.nama}</strong>`;
+                
+                // Format WA number to make it clickable
+                let waNumber = item.hp.replace(/^0/,'62');
+                row.insertCell(2).innerHTML = `<a href="https://wa.me/${waNumber}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:500;">${item.hp}</a>`;
+                
+                row.insertCell(3).innerHTML = item.tanggal;
+                row.insertCell(4).innerHTML = item.alamat;
+                row.insertCell(5).innerHTML = item.ket;
+                
+                // Status badge
+                let statusColor = item.bayar === 'Lunas' ? 'background:#dcfce7; color:#166534;' : 'background:#fef9c3; color:#854d0e;';
+                row.insertCell(6).innerHTML = `<span style="padding:5px 10px; border-radius:20px; font-size:12px; font-weight:600; ${statusColor}">${item.bayar}</span>`;
+                
+                row.insertCell(7).innerHTML = "Rp " + Number(item.rupiah).toLocaleString("id-ID");
+
+                row.insertCell(8).innerHTML = 
+                `<button class="btn-hapus" onclick="hapusData(${index}, this)">
+                    Hapus
+                </button>`;
+            });
+        })
+        .catch(err => {
+            tabel.innerHTML = "<tr><td colspan='9' style='text-align:center; color: var(--danger); padding: 30px;'>Gagal memuat data. Pastikan koneksi internet lancar.</td></tr>";
+        });
+    }
+
+    function hapusData(index, btn){
+        if(!confirm("Yakin ingin menghapus data ini dari Google Sheets?")) return;
+
+        let originalText = btn.innerHTML;
+        btn.innerHTML = "Hapus...";
+        btn.disabled = true;
+
+        fetch(scriptURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8',
+            },
+            body: JSON.stringify({action: "delete", index: index})
+        })
+        .then(res => res.json())
+        .then(res => {
+            if(res.status === 'success'){
+                tampilHistory();
+            } else {
+                alert("Gagal menghapus data");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        })
+        .catch(err => {
+            alert("Terjadi kesalahan jaringan");
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        });
+    }
 </script>
-
 
 </body>
 </html>
