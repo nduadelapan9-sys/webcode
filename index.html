@@ -1069,17 +1069,22 @@
 </div>
 
 <script>
-    // Config Credentials
+    // Config Credentials Admin
     const adminUser = "nraudio";
     const adminPass = "nory28";
+
+    // Default Credentials Supabase Database (Otomatis digunakan di HP lain tanpa perlu setting ulang)
+    const DEFAULT_SUPABASE_URL = "https://tbhvfxwclpumqihpckrj.supabase.co";
+    const DEFAULT_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRiaHZmeHdjbHB1bXFpaHBja3JqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwNDY5MTgsImV4cCI6MjEwMTYyMjkxOH0.P8Zrq-27H_p1TKyb6p_sJ8SGh2eeRE5-pvLzUmvG9pU";
+    const DEFAULT_SUPABASE_TABLE = "pendaftaran";
 
     let supabaseClient = null;
 
     function getSupabaseConfig() {
         return {
-            url: localStorage.getItem("nory_supabase_url") || "",
-            key: localStorage.getItem("nory_supabase_key") || "",
-            table: localStorage.getItem("nory_supabase_table") || "pendaftaran"
+            url: localStorage.getItem("nory_supabase_url") || DEFAULT_SUPABASE_URL,
+            key: localStorage.getItem("nory_supabase_key") || DEFAULT_SUPABASE_KEY,
+            table: localStorage.getItem("nory_supabase_table") || DEFAULT_SUPABASE_TABLE
         };
     }
 
