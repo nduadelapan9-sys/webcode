@@ -3,225 +3,469 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Nory Audio</title>
+    <title>Pendaftaran Nory Audio - Official Portal</title>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Supabase Client JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         :root {
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --bg-gradient-1: #e0eafc;
-            --bg-gradient-2: #cfdef3;
-            --surface: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --secondary: #475569;
+            --accent: #10b981;
+            --accent-bg: #ecfdf5;
+            --warning: #f59e0b;
+            --warning-bg: #fffbeb;
             --danger: #ef4444;
             --danger-hover: #dc2626;
+            --danger-bg: #fef2f2;
+            
+            --bg-main: #f1f5f9;
+            --surface: #ffffff;
+            --surface-glass: rgba(255, 255, 255, 0.95);
+            
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --text-light: #94a3b8;
+            
+            --border: #e2e8f0;
+            --border-focus: #93c5fd;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 15px 35px rgba(15, 23, 42, 0.08);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
+            background: var(--bg-main);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+            background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 20px;
+            padding: 24px 16px;
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
-            background: var(--surface);
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            max-width: 900px;
+            background: var(--surface-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
             overflow: hidden;
-            padding: 30px;
-            margin-top: 2vh;
-            animation: fadeIn 0.5s ease-out;
+            padding: 32px;
+            margin-top: 10px;
+            animation: slideUp 0.4s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Header */
         .header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-wrapper {
+            width: 68px;
+            height: 68px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 2px solid #ffffff;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+            flex-shrink: 0;
         }
 
         .logo {
-            width: 70px;
-            height: 70px;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
-            border-radius: 12px;
         }
 
-        .header-text h2 {
-            font-size: 24px;
-            font-weight: 700;
+        .header-text h1 {
+            font-size: 22px;
+            font-weight: 800;
             color: var(--text-main);
             letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .header-text p {
-            font-size: 14px;
+            font-size: 13.5px;
             color: var(--text-muted);
             margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
+        .badge-official {
+            background: #dbeafe;
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-script-info {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-script-info:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--border-focus);
+        }
+
+        /* Navigation Menu */
         .menu {
             display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            background: #f8fafc;
+            gap: 8px;
+            margin-bottom: 28px;
+            background: #f1f5f9;
             padding: 6px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
         }
 
         .menu button {
             flex: 1;
-            padding: 12px;
+            padding: 12px 18px;
             background: transparent;
             color: var(--text-muted);
             font-weight: 600;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 15px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .menu button.active {
             background: var(--surface);
             color: var(--primary);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-shadow: var(--shadow-sm);
+            font-weight: 700;
         }
 
         .menu button:hover:not(.active) {
-            background: #f1f5f9;
             color: var(--text-main);
+            background: rgba(255, 255, 255, 0.5);
         }
 
-        /* Form Styles */
+        /* Form Grid Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
 
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
         label {
-            display: block;
-            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13.5px;
             font-weight: 600;
             margin-bottom: 8px;
             color: var(--text-main);
         }
 
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--text-light);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         input, textarea, select {
             width: 100%;
-            padding: 14px 16px;
-            font-size: 15px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            padding: 13px 16px 13px 44px;
+            font-size: 14.5px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
             background: #f8fafc;
             color: var(--text-main);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            appearance: none;
+        }
+
+        select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2564748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px;
+        }
+
+        textarea {
+            padding-left: 44px;
+            height: 95px;
+            resize: vertical;
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--primary);
             background: var(--surface);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
         }
 
-        textarea {
-            height: 100px;
-            resize: vertical;
+        .input-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            display: block;
         }
 
+        /* Buttons */
         .btn-submit {
             width: 100%;
             padding: 16px;
             background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: white;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15.5px;
+            font-weight: 700;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
         }
 
         .btn-submit:active {
             transform: translateY(0);
         }
-        
+
         .btn-submit:disabled {
-            background: var(--text-muted);
+            background: #94a3b8;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
-        /* History Section */
+        /* History & Analytics Dashboard */
         #history {
             display: none;
-            animation: fadeIn 0.4s ease-out;
+            animation: fadeIn 0.3s ease-out;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-card .value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        /* Search & Controls */
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box input {
+            padding: 10px 14px 10px 38px;
+            font-size: 13.5px;
+            border-radius: var(--radius-sm);
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-select {
+            padding: 10px 36px 10px 14px;
+            font-size: 13px;
+            border-radius: var(--radius-sm);
+            width: auto;
+        }
+
+        .btn-refresh {
+            padding: 10px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-refresh:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        /* Table */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             border: 1px solid var(--border);
             background: var(--surface);
+            box-shadow: var(--shadow-sm);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px; /* Ensures it scrolls horizontally on small screens */
+            min-width: 850px;
         }
 
         th, td {
             padding: 14px 16px;
             text-align: left;
             border-bottom: 1px solid var(--border);
-            font-size: 14px;
+            font-size: 13.5px;
         }
 
         th {
             background: #f8fafc;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.5px;
+            font-size: 11.5px;
+            letter-spacing: 0.6px;
             white-space: nowrap;
         }
 
@@ -230,54 +474,242 @@
         }
 
         tr:hover td {
-            background: #f1f5f9;
+            background: #f8fafc;
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .badge-lunas {
+            background: var(--accent-bg);
+            color: var(--accent);
+        }
+
+        .badge-dp {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+
+        .btn-action-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-wa-chat {
+            padding: 7px 10px;
+            background: #dcfce7;
+            color: #15803d;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-wa-chat:hover {
+            background: #bbf7d0;
         }
 
         .btn-hapus {
-            padding: 8px 14px;
-            background: var(--danger);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
+            padding: 7px 12px;
+            background: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid #fecaca;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .btn-hapus:hover {
-            background: var(--danger-hover);
+            background: var(--danger);
+            color: white;
         }
-        
+
         .btn-hapus:disabled {
-            opacity: 0.7;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 20px;
-                border-radius: 12px;
-                margin-top: 0;
-            }
-            .header {
-                flex-direction: column;
-                text-align: center;
-                gap: 12px;
-            }
-            .header-text h2 {
-                font-size: 20px;
-            }
-            .menu {
-                flex-direction: column;
-            }
-            .menu button {
-                width: 100%;
-            }
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            pointer-events: auto;
+            min-width: 300px;
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            background: var(--text-main);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .toast.success { background: #064e3b; border-left: 4px solid var(--accent); }
+        .toast.error { background: #7f1d1d; border-left: 4px solid var(--danger); }
+        .toast.info { background: #1e3a8a; border-left: 4px solid var(--primary); }
+
+        /* Custom Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 480px;
+            padding: 28px;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.95);
+            transition: all 0.25s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-close-modal {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .btn-close-modal:hover { color: var(--text-main); }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .btn-secondary {
+            padding: 10px 16px;
+            background: #f1f5f9;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 13.5px;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover { background: #e2e8f0; }
+
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            max-height: 280px;
+            overflow-y: auto;
+            white-space: pre;
+            margin: 12px 0;
+            border: 1px solid #334155;
+        }
+
+        /* Spinner animation */
+        .spinner {
+            animation: rotate 1s linear infinite;
+            width: 18px;
+            height: 18px;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            body { padding: 12px 8px; }
+            .container { padding: 20px 16px; border-radius: var(--radius-md); }
+            .header { flex-direction: column; text-align: center; align-items: center; gap: 14px; }
+            .header-brand { flex-direction: column; text-align: center; }
+            .header-text h1 { justify-content: center; }
+            .header-text p { justify-content: center; }
+            .form-grid { grid-template-columns: 1fr; gap: 0; }
+            .form-group.full-width { grid-column: span 1; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .menu { flex-direction: column; }
         }
     </style>
 </head>
@@ -285,83 +717,284 @@
 
 <div class="container">
 
+    <!-- Header Section -->
     <div class="header">
-        <img src="logo.png" class="logo" alt="Logo Nory Audio" onerror="this.style.display='none'">
-        <div class="header-text">
-            <h2>PENDAFTARAN NORY AUDIO</h2>
-            <p>Website by Nr Audio - 087771549723</p>
+        <div class="header-brand">
+            <div class="logo-wrapper">
+                <img src="logo.png" class="logo" alt="Logo Nory Audio" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <svg style="display:none;" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+            </div>
+            <div class="header-text">
+                <h1>PENDAFTARAN NORY AUDIO <span class="badge-official">Official</span></h1>
+                <p>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    Website by Nr Audio &bull; <strong>087771549723</strong>
+                </p>
+            </div>
         </div>
     </div>
 
+    <!-- Navigation Tabs -->
     <div class="menu">
-        <button id="btnPendaftaran" class="active" onclick="showForm()">Pendaftaran Baru</button>
-        <button id="btnHistory" onclick="loginAdmin()">History Pendaftaran</button>
+        <button id="btnPendaftaran" class="active" onclick="showForm()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Form Pendaftaran
+        </button>
+        <button id="btnHistory" onclick="checkAdminAuth()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+            History (Admin)
+        </button>
     </div>
 
+    <!-- Form Section -->
     <div id="form">
         <form onsubmit="simpanData(event)">
-            
-            <div class="form-group">
-                <label>Nama Penyewa</label>
-                <input type="text" id="nama" placeholder="Masukkan nama lengkap" required>
+            <div class="form-grid">
+                
+                <div class="form-group">
+                    <label for="nama">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Nama Penyewa
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </span>
+                        <input type="text" id="nama" placeholder="Contoh: Ahmad Subagja" required autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hp">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        Nomor HP (WhatsApp)
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </span>
+                        <input type="tel" id="hp" placeholder="Contoh: 08123456789" required autocomplete="off">
+                    </div>
+                    <span class="input-hint">Format diawali 08... atau 628...</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Tanggal Acara
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </span>
+                        <input type="date" id="tanggal" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bayar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        Status Pembayaran
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                        </span>
+                        <select id="bayar">
+                            <option value="DP">DP (Down Payment)</option>
+                            <option value="Lunas">Lunas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="rupiah">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        Nominal Pembayaran (Rp)
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <strong style="font-size:14px; color:var(--text-muted);">Rp</strong>
+                        </span>
+                        <input type="text" id="rupiah" placeholder="Contoh: 500.000" oninput="formatRupiah(this)" required autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="alamat">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        Alamat Acara
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon" style="top:16px; transform:none;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </span>
+                        <textarea id="alamat" placeholder="Tuliskan jalan, nomor rumah, RT/RW, kelurahan, kecamatan..." required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="ket">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        Keterangan Tambahan (Opsional)
+                    </label>
+                    <div class="input-wrapper">
+                        <span class="input-icon" style="top:16px; transform:none;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        </span>
+                        <textarea id="ket" placeholder="Alat/paket yang disewa, jam mulai acara, atau catatan penting lainnya..."></textarea>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="form-group">
-                <label>Nomor HP (WhatsApp)</label>
-                <input type="text" id="hp" placeholder="Contoh: 08123456789" required>
-            </div>
-
-            <div class="form-group">
-                <label>Tanggal Acara</label>
-                <input type="date" id="tanggal" required>
-            </div>
-
-            <div class="form-group">
-                <label>Alamat Acara</label>
-                <textarea id="alamat" placeholder="Tuliskan alamat lengkap acara..." required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Keterangan Tambahan</label>
-                <textarea id="ket" placeholder="Alat yang disewa atau catatan tambahan (Opsional)"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Status Pembayaran</label>
-                <select id="bayar">
-                    <option value="DP">DP (Down Payment)</option>
-                    <option value="Lunas">Lunas</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Nominal Pembayaran (Rp)</label>
-                <input type="text" id="rupiah" placeholder="Contoh: 500.000" oninput="formatRupiah(this)" required>
-            </div>
-
-            <button type="submit" class="btn-submit">Simpan Data</button>
-
+            <button type="submit" id="btnSubmit" class="btn-submit">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                <span>Simpan Data Pendaftaran</span>
+            </button>
         </form>
     </div>
 
+    <!-- History Section -->
     <div id="history">
+        
+        <!-- Supabase Configuration Card inside History Menu -->
+        <div class="supabase-history-card" style="background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 24px; box-shadow: var(--shadow-sm); transition: all 0.3s ease;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: #eff6ff; border: 1px solid #bfdbfe; display: flex; align-items: center; justify-content: center; color: var(--primary); flex-shrink: 0;">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 15.5px; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 8px;">
+                            ⚙️ Konfigurasi Database Supabase
+                        </h3>
+                        <p style="font-size: 12.5px; color: var(--text-muted); margin: 2px 0 0 0;">
+                            Masukkan URL & Anon Key Supabase untuk menghubungkan data pendaftaran ke Cloud.
+                        </p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div id="historyStatusBadge" style="padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; background: #fef2f2; color: #dc2626;">
+                        ● Belum Terhubung
+                    </div>
+                    <button onclick="toggleHistoryConfigCollapse()" id="btnToggleHistoryConfig" style="padding: 7px 14px; background: #f1f5f9; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 12.5px; font-weight: 600; cursor: pointer; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                        <span>⚙️ Pengaturan</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="historyConfigForm" style="display: none; padding-top: 16px; border-top: 1px dashed var(--border); margin-top: 12px;">
+                <div class="form-grid" style="gap: 16px; margin-bottom: 14px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="histSupabaseUrl">Supabase Project URL</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="histSupabaseUrl" style="padding-left: 14px;" placeholder="https://xxxxxxxxx.supabase.co">
+                        </div>
+                        <span class="input-hint">Contoh: https://xyzcompany.supabase.co</span>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="histSupabaseKey">Supabase Public Anon Key</label>
+                        <div class="input-wrapper" style="position: relative;">
+                            <input type="password" id="histSupabaseKey" style="padding-left: 14px; padding-right: 44px;" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6...">
+                            <button type="button" onclick="togglePasswordVisibility('histSupabaseKey')" style="position: absolute; right: 10px; background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 14px; padding: 4px;" title="Lihat/Sembunyikan Key">👁️</button>
+                        </div>
+                        <span class="input-hint">Public Anon API Key dari Supabase Dashboard</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 4px;">
+                    <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                        <label for="histSupabaseTable">Nama Tabel Database</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="histSupabaseTable" style="padding-left: 14px;" placeholder="pendaftaran" value="pendaftaran">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button onclick="saveHistorySupabaseConfig()" class="btn-submit" style="width: auto; padding: 10px 20px; font-size: 13px;">
+                            💾 Simpan Konfigurasi
+                        </button>
+                        <button onclick="testHistorySupabaseConnection()" class="btn-secondary" style="padding: 10px 16px; font-size: 13px;">
+                            ⚡ Uji Koneksi
+                        </button>
+                        <button onclick="openSqlGuideModal()" class="btn-secondary" style="padding: 10px 16px; font-size: 13px; color: var(--primary); border-color: #bfdbfe; background: #eff6ff;">
+                            📜 Script SQL
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Analytics Stat Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Total Penyewa
+                </span>
+                <span class="value" id="statTotalPenyewa">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Total Nilai (Rp)
+                </span>
+                <span class="value" id="statTotalNilai">Rp 0</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Sudah Lunas
+                </span>
+                <span class="value" style="color:var(--accent);" id="statTotalLunas">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Status DP
+                </span>
+                <span class="value" style="color:var(--warning);" id="statTotalDP">0</span>
+            </div>
+        </div>
+
+        <!-- Table Filters & Search -->
+        <div class="table-controls">
+            <div class="search-box">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="searchInput" placeholder="Cari nama, HP, atau alamat..." oninput="filterHistory()">
+            </div>
+            <div class="filter-group">
+                <select class="filter-select" id="filterStatus" onchange="filterHistory()">
+                    <option value="SEMUA">Semua Status</option>
+                    <option value="Lunas">Lunas</option>
+                    <option value="DP">DP</option>
+                </select>
+                <button class="btn-refresh" onclick="tampilHistory()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- Responsive Table Container -->
         <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>HP (WA)</th>
-                        <th>Tanggal</th>
+                        <th style="width: 45px;">No</th>
+                        <th>Nama Penyewa</th>
+                        <th>No WhatsApp</th>
+                        <th>Tgl Acara</th>
                         <th>Alamat</th>
                         <th>Keterangan</th>
                         <th>Status</th>
-                        <th>Nominal (Rp)</th>
-                        <th>Aksi</th>
+                        <th>Nominal</th>
+                        <th style="text-align: center;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="tabelHistory">
-                    <!-- Data will be loaded here -->
+                    <!-- Data loaded dynamically -->
                 </tbody>
             </table>
         </div>
@@ -369,187 +1002,685 @@
 
 </div>
 
-<script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyD6ckdZkgEdAhMVXDTI8_HSIDfugSB2_MSUwhiXYYYB4Hta1ypcNjOaCNtwwJazRI/exec";
+<!-- Custom Toast Notification System -->
+<div class="toast-container" id="toastContainer"></div>
 
+<!-- Admin Login Modal -->
+<div class="modal-overlay" id="modalAdmin">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Login Verifikasi Owner
+            </h3>
+            <button class="btn-close-modal" onclick="closeAdminModal()">&times;</button>
+        </div>
+        <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:16px;">
+            Masukkan kredensial admin untuk mengakses data pendaftaran Nory Audio.
+        </p>
+        <div class="form-group" style="margin-bottom:14px;">
+            <label for="adminUsername">Username</label>
+            <div class="input-wrapper">
+                <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </span>
+                <input type="text" id="adminUsername" placeholder="Masukkan username" autocomplete="off" onkeydown="if(event.key==='Enter') submitAdminLogin()">
+            </div>
+        </div>
+        <div class="form-group" style="margin-bottom:10px;">
+            <label for="adminPassword">Password</label>
+            <div class="input-wrapper">
+                <span class="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </span>
+                <input type="password" id="adminPassword" placeholder="Masukkan password" autocomplete="off" onkeydown="if(event.key==='Enter') submitAdminLogin()">
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeAdminModal()">Batal</button>
+            <button class="btn-submit" style="width:auto; padding:10px 24px;" onclick="submitAdminLogin()">Login History</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Guide SQL Supabase -->
+<div class="modal-overlay" id="modalSqlGuide">
+    <div class="modal-card" style="max-width: 600px;">
+        <div class="modal-header">
+            <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Script SQL untuk Supabase Editor
+            </h3>
+            <button class="btn-close-modal" onclick="closeSqlGuideModal()">&times;</button>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
+            Salin query SQL berikut dan jalankan pada menu <strong>SQL Editor</strong> di Dashboard Supabase Anda:
+        </p>
+        <div style="position:relative; margin-bottom:16px;">
+            <textarea id="sqlCodeArea" readonly style="width:100%; height:200px; font-family:monospace; font-size:12.5px; padding:12px; background:#1e293b; color:#f8fafc; border-radius:8px; resize:none; border:none;"></textarea>
+            <button onclick="copySqlCode()" style="position:absolute; top:10px; right:10px; padding:6px 12px; background:#2563eb; color:white; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">
+                📋 Salin SQL
+            </button>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeSqlGuideModal()">Tutup</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Config Credentials
     const adminUser = "nraudio";
     const adminPass = "nory28";
 
-    function loginAdmin(){
-        let user = prompt("Username Admin:");
-        if (user === null) return; 
-        
-        let pass = prompt("Password Admin:");
-        if (pass === null) return; 
+    let supabaseClient = null;
 
-        if(user === adminUser && pass === adminPass){
-            showHistory();
-        }
-        else{
-            alert("Akses ditolak! Anda bukan Owner Nory Audio");
-        }
+    function getSupabaseConfig() {
+        return {
+            url: localStorage.getItem("nory_supabase_url") || "",
+            key: localStorage.getItem("nory_supabase_key") || "",
+            table: localStorage.getItem("nory_supabase_table") || "pendaftaran"
+        };
     }
 
-    function simpanData(e){
-        e.preventDefault();
+    function syncAllConfigInputs() {
+        const config = getSupabaseConfig();
+        const urlInput = document.getElementById("histSupabaseUrl");
+        const keyInput = document.getElementById("histSupabaseKey");
+        const tableInput = document.getElementById("histSupabaseTable");
 
-        let data={
-            action: "insert",
-            nama:document.getElementById("nama").value,
-            hp:document.getElementById("hp").value,
-            tanggal:document.getElementById("tanggal").value,
-            alamat:document.getElementById("alamat").value,
-            ket:document.getElementById("ket").value,
-            bayar:document.getElementById("bayar").value,
-            rupiah:document.getElementById("rupiah").value.replace(/\./g,'')
-        };
+        if (urlInput) urlInput.value = config.url;
+        if (keyInput) keyInput.value = config.key;
+        if (tableInput) tableInput.value = config.table;
 
-        if(scriptURL === "MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI") {
-            alert("Gagal: URL Google Script belum dimasukkan di kode!");
+        updatePageStatusBadge();
+    }
+
+    function updateSupabaseBanner() {
+        updatePageStatusBadge();
+    }
+
+    function initSupabaseClient() {
+        const config = getSupabaseConfig();
+        if (config.url && config.key && window.supabase) {
+            try {
+                supabaseClient = window.supabase.createClient(config.url, config.key);
+            } catch (e) {
+                console.error("Gagal menginisialisasi Supabase:", e);
+                supabaseClient = null;
+            }
+        } else {
+            supabaseClient = null;
+        }
+        updateSupabaseBanner();
+    }
+
+    function saveHistorySupabaseConfig() {
+        let url = (document.getElementById("histSupabaseUrl")?.value || "").trim();
+        let key = (document.getElementById("histSupabaseKey")?.value || "").trim();
+        let table = (document.getElementById("histSupabaseTable")?.value || "").trim() || "pendaftaran";
+
+        if (!url || !key) {
+            showToast("Supabase Project URL dan Anon Key wajib diisi!", "error");
             return;
         }
 
-        let btn = e.target.querySelector("button[type='submit']");
-        let originalText = btn.innerHTML;
-        btn.innerHTML = "Menyimpan... ⏳";
-        btn.disabled = true;
+        localStorage.setItem("nory_supabase_url", url);
+        localStorage.setItem("nory_supabase_key", key);
+        localStorage.setItem("nory_supabase_table", table);
 
-        fetch(scriptURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'text/plain;charset=utf-8',
-            },
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .then(res => {
-            if(res.status === 'success') {
-                alert("Data berhasil disimpan ke Google Sheets!");
-                document.querySelector("form").reset();
-            } else {
-                alert("Gagal menyimpan data");
-            }
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        })
-        .catch(err => {
-            alert("Terjadi kesalahan jaringan.");
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        });
-    }
+        initSupabaseClient();
+        syncAllConfigInputs();
+        showToast("Konfigurasi Supabase berhasil disimpan!", "success");
 
-    function showHistory(){
-        document.getElementById("form").style.display = "none";
-        document.getElementById("history").style.display = "block";
-        
-        document.getElementById("btnPendaftaran").classList.remove("active");
-        document.getElementById("btnHistory").classList.add("active");
-        
         tampilHistory();
     }
 
-    function showForm(){
+    async function testHistorySupabaseConnection() {
+        saveHistorySupabaseConfig();
+        if (!supabaseClient) {
+            showToast("Gagal menghubungkan Supabase! Periksa URL & Anon Key.", "error");
+            return;
+        }
+        const config = getSupabaseConfig();
+        try {
+            const { data, error } = await supabaseClient.from(config.table).select('count', { count: 'exact', head: true });
+            if (error) throw error;
+            showToast("⚡ Koneksi Supabase BERHASIL! Database terhubung sempurna.", "success");
+        } catch (err) {
+            console.error("Test Connection Error:", err);
+            showToast("Koneksi gagal: " + (err.message || 'Periksa apakah tabel sudah dibuat di Supabase'), "error");
+        }
+    }
+
+    function toggleHistoryConfigCollapse() {
+        const formEl = document.getElementById("historyConfigForm");
+        if (formEl) {
+            formEl.style.display = (formEl.style.display === "none" || !formEl.style.display) ? "block" : "none";
+        }
+    }
+
+    function togglePasswordVisibility(inputId) {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.type = input.type === "password" ? "text" : "password";
+        }
+    }
+
+    function openSqlGuideModal() {
+        const table = document.getElementById("histSupabaseTable")?.value.trim() || "pendaftaran";
+        const sqlText = `create table public.${table} (
+  id bigint generated by default as identity primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  nama text not null,
+  hp text not null,
+  tanggal date not null,
+  alamat text not null,
+  ket text,
+  bayar text not null,
+  rupiah bigint default 0
+);
+
+-- Aktifkan RLS & Kebijakan Akses Publik
+alter table public.${table} enable row level security;
+
+create policy "Akses Publik Seluruhnya" 
+on public.${table} 
+for all 
+using (true) 
+with check (true);`;
+
+        document.getElementById("sqlCodeArea").value = sqlText;
+        document.getElementById("modalSqlGuide").classList.add("active");
+    }
+
+    function closeSqlGuideModal() {
+        document.getElementById("modalSqlGuide").classList.remove("active");
+    }
+
+    function copySqlCode() {
+        const textarea = document.getElementById("sqlCodeArea");
+        textarea.select();
+        document.execCommand("copy");
+        showToast("Script SQL berhasil disalin ke clipboard!", "success");
+    }
+
+    function saveLocalBackupData(dataObj) {
+        try {
+            let current = JSON.parse(localStorage.getItem("nory_local_data") || "[]");
+            current.unshift(dataObj);
+            localStorage.setItem("nory_local_data", JSON.stringify(current));
+        } catch(e) {}
+    }
+
+    function getLocalBackupData() {
+        try {
+            return JSON.parse(localStorage.getItem("nory_local_data") || "[]");
+        } catch(e) {
+            return [];
+        }
+    }
+
+    // Global state
+    let globalHistoryData = [];
+
+    // Set default date to today & init Supabase
+    document.addEventListener("DOMContentLoaded", () => {
+        const today = new Date().toISOString().split('T')[0];
+        if (document.getElementById("tanggal")) document.getElementById("tanggal").value = today;
+        initSupabaseClient();
+        syncAllConfigInputs();
+    });
+
+    // Toast Notification Function
+    function showToast(message, type = 'info') {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        
+        let iconSvg = '';
+        if(type === 'success') {
+            iconSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+        } else if(type === 'error') {
+            iconSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+        } else {
+            iconSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12.01" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+        }
+
+        toast.innerHTML = `${iconSvg} <span>${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    // Submit Form Pendaftaran ke Supabase
+    async function simpanData(e) {
+        e.preventDefault();
+
+        let namaVal = document.getElementById("nama").value.trim();
+        let hpVal = document.getElementById("hp").value.trim();
+        let tanggalVal = document.getElementById("tanggal").value;
+        let alamatVal = document.getElementById("alamat").value.trim();
+        let ketVal = document.getElementById("ket").value.trim();
+        let bayarVal = document.getElementById("bayar").value;
+        let rupiahRaw = document.getElementById("rupiah").value.replace(/\./g, '');
+
+        if (!namaVal || !hpVal || !tanggalVal || !alamatVal || !rupiahRaw) {
+            showToast("Harap isi semua bidang wajib!", "error");
+            return;
+        }
+
+        if (!supabaseClient) {
+            showToast("Supabase belum dikonfigurasi! Harap atur di Menu History.", "error");
+            checkAdminAuth();
+            return;
+        }
+
+        const config = getSupabaseConfig();
+        const payload = {
+            nama: namaVal,
+            hp: hpVal,
+            tanggal: tanggalVal,
+            alamat: alamatVal,
+            ket: ketVal,
+            bayar: bayarVal,
+            rupiah: parseInt(rupiahRaw, 10) || 0
+        };
+
+        let btn = document.getElementById("btnSubmit");
+        let originalContent = btn.innerHTML;
+        btn.innerHTML = `
+            <svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="10"></circle>
+            </svg>
+            <span>Menyimpan ke Supabase...</span>
+        `;
+        btn.disabled = true;
+
+        try {
+            const { data, error } = await supabaseClient
+                .from(config.table)
+                .insert([payload])
+                .select();
+
+            if (error) throw error;
+
+            showToast("Data pendaftaran berhasil disimpan ke Supabase!", "success");
+            document.querySelector("form").reset();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById("tanggal").value = today;
+
+        } catch (err) {
+            console.error("Detail Error Supabase Insert:", err);
+            saveLocalBackupData(payload);
+            showToast("Gagal simpan ke Supabase (" + (err.message || err) + "). Tersimpan di cadangan lokal.", "error");
+        } finally {
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+        }
+    }
+
+    // Admin Auth & Modal Handler
+    function checkAdminAuth() {
+        if (sessionStorage.getItem("nory_admin_logged") === "true") {
+            showHistory();
+        } else {
+            document.getElementById("modalAdmin").classList.add("active");
+            setTimeout(() => document.getElementById("adminUsername").focus(), 100);
+        }
+    }
+
+    function closeAdminModal() {
+        document.getElementById("modalAdmin").classList.remove("active");
+    }
+
+    function submitAdminLogin() {
+        let u = document.getElementById("adminUsername").value.trim();
+        let p = document.getElementById("adminPassword").value.trim();
+
+        if (u === adminUser && p === adminPass) {
+            sessionStorage.setItem("nory_admin_logged", "true");
+            closeAdminModal();
+            showHistory();
+            showToast("Login Owner berhasil", "success");
+        } else {
+            showToast("Akses Ditolak! Username/Password Salah.", "error");
+        }
+    }
+
+    function showHistory() {
+        document.getElementById("form").style.display = "none";
+        document.getElementById("history").style.display = "block";
+
+        document.getElementById("btnPendaftaran").classList.remove("active");
+        document.getElementById("btnHistory").classList.add("active");
+
+        syncAllConfigInputs();
+        tampilHistory();
+    }
+
+    function showForm() {
         document.getElementById("form").style.display = "block";
         document.getElementById("history").style.display = "none";
-        
+
         document.getElementById("btnHistory").classList.remove("active");
         document.getElementById("btnPendaftaran").classList.add("active");
     }
 
-    function formatRupiah(input){
-        let angka = input.value.replace(/\D/g,'');
-        input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
-    }
+    function updatePageStatusBadge() {
+        const isConnected = !!supabaseClient;
+        const badge = document.getElementById("historyStatusBadge");
 
-    function tampilHistory(){
-        let tabel = document.getElementById("tabelHistory");
-        tabel.innerHTML = "<tr><td colspan='9' style='text-align:center; padding: 30px; color: var(--text-muted); font-weight:500;'>Memuat data dari Google Sheets... ⏳</td></tr>";
-
-        if(scriptURL === "MASUKKAN_URL_GOOGLE_SCRIPT_ANDA_DISINI") {
-            tabel.innerHTML="<tr><td colspan='9' style='text-align:center; color: var(--danger); padding: 30px;'>Gagal: URL Google Script belum dimasukkan di kode!</td></tr>";
-            return;
+        if (badge) {
+            if (isConnected) {
+                badge.style.background = "#ecfdf5";
+                badge.style.color = "#059669";
+                badge.innerHTML = "● Terhubung ke Supabase";
+            } else {
+                badge.style.background = "#fef2f2";
+                badge.style.color = "#dc2626";
+                badge.innerHTML = "● Belum Terhubung";
+            }
         }
 
-        fetch(scriptURL)
-        .then(res => res.json())
-        .then(data => {
-            tabel.innerHTML = "";
+        // Auto open config form in History if Supabase is not configured yet
+        const historyForm = document.getElementById("historyConfigForm");
+        if (historyForm && !isConnected) {
+            historyForm.style.display = "block";
+        }
+    }
 
-            if(!data || data.length === 0){
-                tabel.innerHTML = "<tr><td colspan='9' style='text-align:center; color: var(--text-muted); padding: 30px;'>Belum ada data pendaftaran.</td></tr>";
+    function formatRupiah(input) {
+        let angka = input.value.replace(/\D/g, '');
+        input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    // Fetch and display history from Supabase
+    async function tampilHistory() {
+        let tabel = document.getElementById("tabelHistory");
+        tabel.innerHTML = `
+            <tr>
+                <td colspan="9" style="text-align:center; padding: 40px 20px; color: var(--text-muted);">
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+                        <svg class="spinner" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="3">
+                            <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="10"></circle>
+                        </svg>
+                        <span>Memuat data pendaftaran dari Supabase...</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        if (!supabaseClient) {
+            let localData = getLocalBackupData();
+            if (localData.length > 0) {
+                globalHistoryData = localData;
+                renderTableData(localData);
+                updateAnalytics(localData);
+                showToast("Menampilkan cadangan data lokal (Supabase belum di-config)", "info");
                 return;
             }
 
-            data.forEach((item,index)=>{
-                let row = tabel.insertRow();
-                row.insertCell(0).innerHTML = index + 1;
-                row.insertCell(1).innerHTML = `<strong style="color:var(--text-main);">${item.nama}</strong>`;
-                
-                // Format WA number to make it clickable (convert to string first because Google Sheets might send it as a number)
-                let hpStr = String(item.hp);
-                let waNumber = hpStr.replace(/^0/,'62');
-                row.insertCell(2).innerHTML = `<a href="https://wa.me/${waNumber}" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:500;">${hpStr}</a>`;
-                
-                // Format Tanggal
-                let tgl = item.tanggal;
-                try {
+            tabel.innerHTML = `
+                <tr>
+                    <td colspan="9" style="padding: 24px;">
+                        <div style="background:#eff6ff; border:1.5px solid #bfdbfe; border-radius:12px; padding:20px; color:#1e40af;">
+                            <h4 style="margin-bottom:8px; display:flex; align-items:center; gap:8px; font-size:15px; font-weight:700;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                Supabase Belum Dikonfigurasi
+                            </h4>
+                            <p style="font-size:13px; color:#1e3a8a; margin-bottom:12px; line-height:1.5;">
+                                Masukkan <strong>Project URL</strong> dan <strong>Anon Key</strong> Supabase Anda untuk menghubungkan database cloud.
+                            </p>
+                            <div style="display:flex; gap:10px;">
+                                <button onclick="toggleHistoryConfigCollapse()" style="padding:8px 16px; background:#2563eb; color:white; border:none; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer;">
+                                    ⚙️ Buka Form Config Supabase
+                                </button>
+                                <button onclick="openSqlGuideModal()" style="padding:8px 16px; background:white; color:#2563eb; border:1px solid #bfdbfe; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer;">
+                                    📜 Lihat Query SQL Tabel
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        const config = getSupabaseConfig();
+
+        try {
+            const { data, error } = await supabaseClient
+                .from(config.table)
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (error) throw error;
+
+            globalHistoryData = data || [];
+            renderTableData(globalHistoryData);
+            updateAnalytics(globalHistoryData);
+
+        } catch (err) {
+            console.error("Detail Error Supabase Fetch:", err);
+
+            let localData = getLocalBackupData();
+            if (localData.length > 0) {
+                globalHistoryData = localData;
+                renderTableData(localData);
+                updateAnalytics(localData);
+                showToast("Menampilkan data cadangan lokal", "info");
+                return;
+            }
+
+            tabel.innerHTML = `
+                <tr>
+                    <td colspan="9" style="padding: 24px;">
+                        <div style="background:#fef2f2; border:1.5px solid #fecaca; border-radius:12px; padding:20px; color:#991b1b;">
+                            <h4 style="margin-bottom:8px; display:flex; align-items:center; gap:8px; font-size:15px; font-weight:700;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                Gagal Memuat Data dari Supabase
+                            </h4>
+                            <p style="font-size:13px; color:#7f1d1d; margin-bottom:12px; line-height:1.5;">
+                                Pesan Error: <strong>${escapeHtml(err.message || JSON.stringify(err))}</strong>
+                            </p>
+                            <div style="background:white; border-radius:8px; padding:12px 16px; margin-bottom:14px; font-size:12.5px; color:#334155;">
+                                <strong>Kemungkinan Penyebab:</strong>
+                                <ul style="margin-left:18px; margin-top:6px; line-height:1.6;">
+                                    <li>Tabel <code>${escapeHtml(config.table)}</code> belum dibuat di Supabase SQL Editor.</li>
+                                    <li>Kebijakan RLS (Row Level Security) belum diizinkan untuk SELECT/INSERT.</li>
+                                    <li>Supabase Anon Key atau URL salah.</li>
+                                </ul>
+                            </div>
+                            <div style="display:flex; gap:10px;">
+                                <button onclick="tampilHistory()" style="padding:8px 14px; background:#dc2626; color:white; border:none; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer;">
+                                    🔄 Coba Lagi
+                                </button>
+                                <button onclick="toggleHistoryConfigCollapse()" style="padding:8px 14px; background:white; color:#991b1b; border:1px solid #fecaca; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer;">
+                                    ⚙️ Perbaiki Config Supabase
+                                </button>
+                                <button onclick="openSqlGuideModal()" style="padding:8px 14px; background:#2563eb; color:white; border:none; border-radius:6px; font-size:12.5px; font-weight:600; cursor:pointer;">
+                                    📜 Ambil Script SQL
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            showToast("Gagal terhubung ke Supabase: " + (err.message || 'Error'), "error");
+        }
+    }
+
+    // Render Table Data
+    function renderTableData(dataList) {
+        let tabel = document.getElementById("tabelHistory");
+        tabel.innerHTML = "";
+
+        if (!dataList || dataList.length === 0) {
+            tabel.innerHTML = `
+                <tr>
+                    <td colspan="9" style="text-align:center; color: var(--text-muted); padding: 40px;">
+                        Tidak ada data pendaftaran yang ditemukan.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        dataList.forEach((item, index) => {
+            let row = tabel.insertRow();
+            
+            // No
+            row.insertCell(0).innerHTML = `<strong>${index + 1}</strong>`;
+            
+            // Nama
+            row.insertCell(1).innerHTML = `<strong style="color:var(--text-main); font-weight:700;">${escapeHtml(item.nama)}</strong>`;
+
+            // WA Link
+            let hpStr = String(item.hp || '');
+            let cleanHp = hpStr.replace(/\D/g, '');
+            if (cleanHp.startsWith('0')) {
+                cleanHp = '62' + cleanHp.substring(1);
+            }
+            row.insertCell(2).innerHTML = `
+                <a href="https://wa.me/${cleanHp}" target="_blank" class="btn-wa-chat">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    ${escapeHtml(hpStr)}
+                </a>
+            `;
+
+            // Tanggal
+            let tglFormatted = item.tanggal;
+            try {
+                if (item.tanggal) {
                     let d = new Date(item.tanggal);
-                    if(!isNaN(d)) {
-                        tgl = d.toLocaleDateString("id-ID");
+                    if (!isNaN(d.getTime())) {
+                        tglFormatted = d.toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' });
                     }
-                } catch(e) {}
-                row.insertCell(3).innerHTML = tgl;
+                }
+            } catch (e) {}
+            row.insertCell(3).innerHTML = `<span style="font-weight:600; color:var(--secondary);">${escapeHtml(tglFormatted)}</span>`;
 
-                row.insertCell(4).innerHTML = item.alamat;
-                row.insertCell(5).innerHTML = item.ket;
-                
-                // Status badge
-                let statusColor = item.bayar === 'Lunas' ? 'background:#dcfce7; color:#166534;' : 'background:#fef9c3; color:#854d0e;';
-                row.insertCell(6).innerHTML = `<span style="padding:5px 10px; border-radius:20px; font-size:12px; font-weight:600; ${statusColor}">${item.bayar}</span>`;
-                
-                row.insertCell(7).innerHTML = "Rp " + Number(item.rupiah).toLocaleString("id-ID");
+            // Alamat & Ket
+            row.insertCell(4).innerHTML = escapeHtml(item.alamat || '-');
+            row.insertCell(5).innerHTML = escapeHtml(item.ket || '-');
 
-                row.insertCell(8).innerHTML = 
-                `<button class="btn-hapus" onclick="hapusData(${index}, this)">
-                    Hapus
-                </button>`;
-            });
-        })
-        .catch(err => {
-            tabel.innerHTML = "<tr><td colspan='9' style='text-align:center; color: var(--danger); padding: 30px;'>Gagal memuat data. Pastikan koneksi internet lancar.</td></tr>";
+            // Status Badge
+            let isLunas = item.bayar === 'Lunas';
+            let badgeClass = isLunas ? 'badge-lunas' : 'badge-dp';
+            let statusIcon = isLunas ? 
+                `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>` : 
+                `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+            
+            row.insertCell(6).innerHTML = `<span class="badge-status ${badgeClass}">${statusIcon} ${escapeHtml(item.bayar)}</span>`;
+
+            // Nominal
+            let valNum = Number(item.rupiah) || 0;
+            row.insertCell(7).innerHTML = `<strong>Rp ${valNum.toLocaleString("id-ID")}</strong>`;
+
+            // Actions
+            row.insertCell(8).innerHTML = `
+                <div class="btn-action-group" style="justify-content:center;">
+                    <button class="btn-hapus" onclick="hapusData(${index}, this)">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        Hapus
+                    </button>
+                </div>
+            `;
         });
     }
 
-    function hapusData(index, btn){
-        if(!confirm("Yakin ingin menghapus data ini dari Google Sheets?")) return;
+    // Filter & Search History
+    function filterHistory() {
+        let query = document.getElementById("searchInput").value.toLowerCase();
+        let statusFilter = document.getElementById("filterStatus").value;
 
-        let originalText = btn.innerHTML;
+        let filtered = globalHistoryData.filter(item => {
+            let matchesQuery = 
+                (item.nama && item.nama.toLowerCase().includes(query)) ||
+                (item.hp && String(item.hp).includes(query)) ||
+                (item.alamat && item.alamat.toLowerCase().includes(query));
+            
+            let matchesStatus = (statusFilter === 'SEMUA') || (item.bayar === statusFilter);
+
+            return matchesQuery && matchesStatus;
+        });
+
+        renderTableData(filtered);
+    }
+
+    // Calculate Analytics Cards
+    function updateAnalytics(dataList) {
+        let totalPenyewa = dataList.length;
+        let totalNilai = 0;
+        let countLunas = 0;
+        let countDP = 0;
+
+        dataList.forEach(item => {
+            totalNilai += Number(item.rupiah) || 0;
+            if (item.bayar === 'Lunas') countLunas++;
+            if (item.bayar === 'DP') countDP++;
+        });
+
+        document.getElementById("statTotalPenyewa").innerText = totalPenyewa;
+        document.getElementById("statTotalNilai").innerText = "Rp " + totalNilai.toLocaleString("id-ID");
+        document.getElementById("statTotalLunas").innerText = countLunas;
+        document.getElementById("statTotalDP").innerText = countDP;
+    }
+
+    // Delete Data from Supabase
+    async function hapusData(index, btn) {
+        let item = globalHistoryData[index];
+        if (!item) return;
+
+        if (!confirm(`Konfirmasi: Yakin ingin menghapus data pendaftaran "${item.nama}"?`)) return;
+
+        let originalContent = btn.innerHTML;
         btn.innerHTML = "Hapus...";
         btn.disabled = true;
 
-        fetch(scriptURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'text/plain;charset=utf-8',
-            },
-            body: JSON.stringify({action: "delete", index: index})
-        })
-        .then(res => res.json())
-        .then(res => {
-            if(res.status === 'success'){
+        if (item.id && supabaseClient) {
+            const config = getSupabaseConfig();
+            try {
+                const { error } = await supabaseClient
+                    .from(config.table)
+                    .delete()
+                    .eq('id', item.id);
+
+                if (error) throw error;
+
+                showToast("Data berhasil dihapus dari Supabase", "success");
                 tampilHistory();
-            } else {
-                alert("Gagal menghapus data");
-                btn.innerHTML = originalText;
+                return;
+            } catch (err) {
+                console.error("Error Hapus Supabase:", err);
+                showToast("Gagal menghapus data dari Supabase: " + (err.message || err), "error");
+                btn.innerHTML = originalContent;
                 btn.disabled = false;
+                return;
             }
-        })
-        .catch(err => {
-            alert("Terjadi kesalahan jaringan");
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        });
+        }
+
+        // Local backup fallback deletion
+        let localData = getLocalBackupData();
+        localData.splice(index, 1);
+        localStorage.setItem("nory_local_data", JSON.stringify(localData));
+        showToast("Data cadangan lokal dihapus", "info");
+        tampilHistory();
+    }
+
+    // XSS Prevention Utility
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 </script>
 
